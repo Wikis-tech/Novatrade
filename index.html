@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaTrade — Premier Brokerage Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --dark: #0A0C0F;
+    --dark2: #111418;
+    --dark3: #181C22;
+    --text: #E8E6E0;
+    --muted: #7A7870;
+    --accent: #1A3A5C;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 20px 60px;
+    background: linear-gradient(to bottom, rgba(10,12,15,0.95), transparent);
+    backdrop-filter: blur(10px);
+  }
+  .logo { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; color:var(--gold); letter-spacing:2px; text-decoration:none; }
+  .nav-links { display:flex; gap:36px; list-style:none; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:14px; letter-spacing:0.5px; transition:color 0.3s; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { display:flex; gap:12px; }
+  .btn-outline { padding:10px 24px; border:1px solid var(--gold); color:var(--gold); background:none; border-radius:2px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; text-decoration:none; transition:all 0.3s; }
+  .btn-outline:hover { background:var(--gold); color:var(--dark); }
+  .btn-gold { padding:10px 24px; background:var(--gold); color:var(--dark); border:none; border-radius:2px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; text-decoration:none; transition:all 0.3s; }
+  .btn-gold:hover { background:var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items:center;
+    position:relative; overflow:hidden;
+    padding: 140px 60px 80px;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(26,58,92,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position:absolute; inset:0; opacity:0.04;
+    background-image: linear-gradient(rgba(201,168,76,0.5) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(201,168,76,0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position:relative; max-width:680px; }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border:1px solid rgba(201,168,76,0.3); border-radius:20px; font-size:12px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:32px; }
+  .hero-tag::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,6vw,88px); font-weight:300; line-height:1.05; letter-spacing:-1px; margin-bottom:24px; }
+  h1 span { color:var(--gold); font-style:italic; }
+  .hero-sub { font-size:16px; color:var(--muted); line-height:1.8; max-width:460px; margin-bottom:48px; }
+  .hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-primary { padding:16px 40px; background:var(--gold); color:var(--dark); border:none; border-radius:2px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; text-decoration:none; transition:all 0.3s; display:inline-block; }
+  .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 12px 40px rgba(201,168,76,0.3); }
+  .btn-secondary { padding:16px 40px; border:1px solid rgba(255,255,255,0.15); color:var(--text); background:none; border-radius:2px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; text-decoration:none; transition:all 0.3s; display:inline-block; }
+  .btn-secondary:hover { border-color:var(--gold); color:var(--gold); }
+  .hero-stats { position:absolute; right:60px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:24px; }
+  .stat-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:4px; padding:24px 28px; min-width:180px; backdrop-filter:blur(10px); }
+  .stat-val { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:700; color:var(--gold); }
+  .stat-label { font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+
+  /* TICKER */
+  .ticker-bar { background:var(--dark2); border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); padding:12px 0; overflow:hidden; }
+  .ticker-inner { display:flex; gap:60px; animation:ticker 30s linear infinite; white-space:nowrap; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .tick-item { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); }
+  .tick-name { color:var(--text); font-weight:500; }
+  .tick-up { color:#4CAF50; }
+  .tick-down { color:#F44336; }
+
+  /* FEATURES */
+  section { padding:100px 60px; }
+  .section-tag { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; }
+  .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,56px); font-weight:300; margin-bottom:60px; }
+  .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .feat { background:var(--dark2); padding:48px 40px; border:1px solid rgba(255,255,255,0.04); transition:all 0.4s; position:relative; overflow:hidden; }
+  .feat::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+  .feat:hover::before { transform:scaleX(1); }
+  .feat:hover { background:var(--dark3); transform:translateY(-4px); }
+  .feat-icon { width:48px; height:48px; margin-bottom:28px; opacity:0.8; }
+  .feat h3 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; margin-bottom:12px; }
+  .feat p { font-size:14px; color:var(--muted); line-height:1.8; }
+
+  /* HOW IT WORKS */
+  .how { background:var(--dark2); }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+  .steps::before { content:''; position:absolute; top:32px; left:12.5%; right:12.5%; height:1px; background:linear-gradient(90deg, var(--gold), rgba(201,168,76,0.2)); }
+  .step { padding:40px 24px; text-align:center; }
+  .step-num { width:64px; height:64px; border-radius:50%; background:var(--dark); border:1px solid var(--gold); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold); }
+  .step h4 { font-size:15px; font-weight:500; margin-bottom:8px; }
+  .step p { font-size:13px; color:var(--muted); line-height:1.7; }
+
+  /* CTA */
+  .cta-section { text-align:center; background:linear-gradient(135deg, var(--accent) 0%, var(--dark) 100%); position:relative; overflow:hidden; }
+  .cta-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(201,168,76,0.1) 0%, transparent 70%); }
+  .cta-section h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,4vw,60px); font-weight:300; margin-bottom:20px; position:relative; }
+  .cta-section p { font-size:16px; color:var(--muted); margin-bottom:40px; position:relative; }
+
+  /* FOOTER */
+  footer { background:var(--dark2); border-top:1px solid rgba(255,255,255,0.06); padding:60px; display:flex; justify-content:space-between; align-items:center; }
+  .footer-logo { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--gold); letter-spacing:2px; }
+  .footer-links { display:flex; gap:32px; list-style:none; }
+  .footer-links a { color:var(--muted); text-decoration:none; font-size:13px; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--gold); }
+  .footer-copy { color:var(--muted); font-size:12px; }
+
+  @media(max-width:900px) {
+    nav { padding:20px 24px; }
+    .nav-links { display:none; }
+    .hero { padding:120px 24px 60px; }
+    .hero-stats { display:none; }
+    section { padding:60px 24px; }
+    .features-grid { grid-template-columns:1fr; }
+    .steps { grid-template-columns:1fr 1fr; }
+    .steps::before { display:none; }
+    footer { flex-direction:column; gap:24px; text-align:center; padding:40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">NOVATRADE</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#markets">Markets</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="login.html" class="btn-outline">Sign In</a>
+    <a href="login.html#signup" class="btn-gold">Open Account</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Live Markets · Real Returns</div>
+    <h1>Trade with <span>Precision</span> & Confidence</h1>
+    <p class="hero-sub">NovaTrade gives you institutional-grade tools, real-time data, and dedicated support to grow your portfolio — backed by world-class security and compliance.</p>
+    <div class="hero-actions">
+      <a href="login.html#signup" class="btn-primary">Start Trading Today</a>
+      <a href="#how" class="btn-secondary">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-val">$4.2B+</div>
+      <div class="stat-label">Assets Under Management</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">98.7%</div>
+      <div class="stat-label">Uptime Guarantee</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">150K+</div>
+      <div class="stat-label">Active Traders</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="tick-item"><span class="tick-name">BTC/USD</span> 67,420.50 <span class="tick-up">▲ 2.34%</span></span>
+    <span class="tick-item"><span class="tick-name">ETH/USD</span> 3,812.20 <span class="tick-up">▲ 1.87%</span></span>
+    <span class="tick-item"><span class="tick-name">AAPL</span> 189.45 <span class="tick-down">▼ 0.52%</span></span>
+    <span class="tick-item"><span class="tick-name">TSLA</span> 248.90 <span class="tick-up">▲ 3.10%</span></span>
+    <span class="tick-item"><span class="tick-name">GOLD</span> 2,340.80 <span class="tick-up">▲ 0.76%</span></span>
+    <span class="tick-item"><span class="tick-name">EUR/USD</span> 1.0892 <span class="tick-down">▼ 0.21%</span></span>
+    <span class="tick-item"><span class="tick-name">SPX</span> 5,234.60 <span class="tick-up">▲ 0.43%</span></span>
+    <span class="tick-item"><span class="tick-name">SOL/USD</span> 142.30 <span class="tick-up">▲ 4.22%</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick-item"><span class="tick-name">BTC/USD</span> 67,420.50 <span class="tick-up">▲ 2.34%</span></span>
+    <span class="tick-item"><span class="tick-name">ETH/USD</span> 3,812.20 <span class="tick-up">▲ 1.87%</span></span>
+    <span class="tick-item"><span class="tick-name">AAPL</span> 189.45 <span class="tick-down">▼ 0.52%</span></span>
+    <span class="tick-item"><span class="tick-name">TSLA</span> 248.90 <span class="tick-up">▲ 3.10%</span></span>
+    <span class="tick-item"><span class="tick-name">GOLD</span> 2,340.80 <span class="tick-up">▲ 0.76%</span></span>
+    <span class="tick-item"><span class="tick-name">EUR/USD</span> 1.0892 <span class="tick-down">▼ 0.21%</span></span>
+    <span class="tick-item"><span class="tick-name">SPX</span> 5,234.60 <span class="tick-up">▲ 0.43%</span></span>
+    <span class="tick-item"><span class="tick-name">SOL/USD</span> 142.30 <span class="tick-up">▲ 4.22%</span></span>
+  </div>
+</div>
+
+<section id="features">
+  <div class="section-tag">Why NovaTrade</div>
+  <div class="section-title">Built for Serious Traders</div>
+  <div class="features-grid">
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 36L18 24L26 30L36 16" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="12" r="4" stroke="#C9A84C" stroke-width="2"/>
+      </svg>
+      <h3>Live Market Data</h3>
+      <p>Real-time pricing across 10,000+ instruments including equities, crypto, forex, and commodities.</p>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <rect x="8" y="8" width="32" height="32" rx="4" stroke="#C9A84C" stroke-width="2"/>
+        <path d="M16 24h4l4-8 4 16 4-8h4" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3>Secure Withdrawals</h3>
+      <p>Multi-step verification process ensures your funds are always protected with admin-level clearance protocols.</p>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="16" stroke="#C9A84C" stroke-width="2"/>
+        <path d="M24 16v8l6 4" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h3>24/7 Support</h3>
+      <p>Direct access to dedicated customer service agents for all payment queries and account management.</p>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <path d="M12 36V20M20 36V12M28 36V24M36 36V8" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h3>Portfolio Analytics</h3>
+      <p>Track performance, P&L, and transaction history with detailed reporting and export capabilities.</p>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <path d="M24 8l4 8 9 1-6.5 6.3 1.5 9L24 28l-8 4.3 1.5-9L11 17l9-1z" stroke="#C9A84C" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <h3>Premium Accounts</h3>
+      <p>Unlock advanced features, tighter spreads, and priority processing with our Premium membership tier.</p>
+    </div>
+    <div class="feat">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <rect x="8" y="16" width="32" height="24" rx="2" stroke="#C9A84C" stroke-width="2"/>
+        <path d="M16 16V12a8 8 0 0116 0v4" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="28" r="3" stroke="#C9A84C" stroke-width="2"/>
+      </svg>
+      <h3>Regulated & Compliant</h3>
+      <p>Fully licensed brokerage with segregated client funds and rigorous KYC/AML compliance procedures.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="how">
+  <div class="section-tag">Getting Started</div>
+  <div class="section-title">Simple. Secure. Streamlined.</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Create Account</h4>
+      <p>Register with your details and complete identity verification in minutes.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>Fund Your Account</h4>
+      <p>Deposit funds and have your account activated by our support team.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>Start Trading</h4>
+      <p>Access markets, place orders, and monitor your portfolio in real time.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h4>Withdraw Profits</h4>
+      <p>Complete required clearance steps with support and receive your funds securely.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Ready to Build Your Wealth?</h2>
+  <p>Join 150,000+ traders who trust NovaTrade with their financial future.</p>
+  <a href="login.html#signup" class="btn-primary">Open Free Account</a>
+</section>
+
+<footer>
+  <div class="footer-logo">NOVATRADE</div>
+  <ul class="footer-links">
+    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="#">Terms of Service</a></li>
+    <li><a href="#">Risk Disclosure</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 NovaTrade. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
